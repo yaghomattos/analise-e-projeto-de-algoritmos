@@ -5,38 +5,45 @@
 
 using namespace std;
 
-struct Aresta
+struct Vertice
 {
-    int origem;
-    int destino;
+    int valor;
+    vector<Vertice> lista;
 };
 
 int main()
 {
     int numVertices = 100;
+    int mult = 0; /* multiplicador para o número de arestas de 1 a 10 */
 
-    vector<Aresta> grafo;
+    vector<Vertice> grafo;
 
     srand(time(NULL));
 
-    for (int i = 0; i < numVertices * (rand() % 10 + 1); i++)
+    /* inicializacao de todos os vertices */
+    for (int i = 0; i < numVertices; i++)
     {
-        Aresta novaAresta;
+        Vertice novo;
+        novo.valor = i;
 
-        novaAresta.origem = rand() % 100;
-        novaAresta.destino = rand() % 100;
-
-        /*Caso a aresta gerada aponte para o mesmo vértice de origem é gerada
-        uma nova aresta*/
-        if (novaAresta.destino == novaAresta.origem)
-            novaAresta.destino = rand() % 100;
-
-        grafo.push_back(novaAresta);
-
-        cout << grafo.at(i).origem << "->" << grafo.at(i).destino << endl;
+        grafo.push_back(novo);
     }
 
-    cout << "Numero de Arestas: " << grafo.size() << endl;
+    /* geracao de 1 a 10 arestas aleatorias por vertice */
+    for (int i = 0; i < numVertices; i++)
+    {
+        mult = rand() % 10 + 1;
+        for (int j = 0; j < mult; j++)
+        {
+            int aresta = rand() % 99;
+            grafo.at(i).lista.push_back(grafo.at(aresta));
+        }
+    }
+
+    for (int i = 0; i < numVertices; i++)
+    {
+        cout << grafo.at(i).valor << " Numero de Arestas: " << grafo.at(i).lista.size() << endl;
+    }
 
     return 0;
 }
