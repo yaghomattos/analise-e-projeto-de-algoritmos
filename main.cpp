@@ -11,6 +11,16 @@ struct Vertice
     vector<Vertice> lista;
 };
 
+int k(int i, int n)
+{
+    if (i == 0)
+        return 0;
+    else
+    {
+        return (n - (i - 1) + k(i - 1, n));
+    }
+}
+
 int main()
 {
     int n = 10;
@@ -57,7 +67,7 @@ int main()
         }
     }
 
-    /* geracao da matriz de adjacencia */
+    /* geracao da matriz de adjacencia binaria */
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n; j++)
@@ -72,7 +82,7 @@ int main()
         }
     }
 
-    /* equalizacao da matriz de adjacencia */
+    /* equalizacao da matriz de adjacencia binaria */
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n; j++)
@@ -85,6 +95,7 @@ int main()
         }
     }
 
+    cout << "Numero de Arestas = " << numAresta << endl;
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n; j++)
@@ -94,7 +105,25 @@ int main()
         cout << endl;
     }
 
-    cout << numAresta;
+    bool vetor[((n - 1) * n) / 2];
+
+    /* representacao vetorial da matriz de adjacencia binaria */
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            int pos = j - i + k(i, n - 1);
+
+            vetor[pos - 1] = matriz[i][j];
+        }
+    }
+
+    cout << endl
+         << "Representacao vetorial parte triangular superior:" << endl;
+    for (int i = 0; i < ((n - 1) * n) / 2; i++)
+    {
+        cout << "pos " << i << " = " << vetor[i] << endl;
+    }
 
     return 0;
 }
