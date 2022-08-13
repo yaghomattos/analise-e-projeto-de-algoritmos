@@ -26,8 +26,13 @@ int main()
     int n = 10;
     int mult = 0; /* multiplicador para o número de arestas de 1 a 10 */
     int numAresta = 0;
+    int tamVetor = ((n - 1) * n) / 2;
+
+    bool matriz[n][n];
+    bool vetor[tamVetor];
 
     vector<Vertice> grafo;
+    vector<int> vetorCompacto;
 
     srand(time(NULL));
 
@@ -55,8 +60,6 @@ int main()
             numAresta++;
         }
     }
-
-    bool matriz[n][n];
 
     /* inicializacao da matriz */
     for (int i = 0; i < n; i++)
@@ -105,8 +108,6 @@ int main()
         cout << endl;
     }
 
-    bool vetor[((n - 1) * n) / 2];
-
     /* representacao vetorial da matriz de adjacencia binaria */
     for (int i = 0; i < n; i++)
     {
@@ -120,9 +121,25 @@ int main()
 
     cout << endl
          << "Representacao vetorial parte triangular superior:" << endl;
-    for (int i = 0; i < ((n - 1) * n) / 2; i++)
+    for (int i = 0; i < tamVetor; i++)
     {
-        cout << "pos " << i << " = " << vetor[i] << endl;
+        cout << "pos " << i + 1 << " = " << vetor[i] << endl;
+    }
+
+    /* representacao compactada do vetor */
+    for (int i = 0; i < tamVetor; i++)
+    {
+        if (vetor[i] == 1)
+        {
+            vetorCompacto.push_back(i);
+        }
+    }
+
+    cout << endl
+         << "Vetor compactado:" << endl;
+    for (int i = 0; i < vetorCompacto.size(); i++)
+    {
+        cout << vetorCompacto[i] + 1 << endl;
     }
 
     return 0;
