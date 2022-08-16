@@ -29,7 +29,10 @@ int main()
     int tamVetor = ((n - 1) * n) / 2;
 
     bool matriz[n][n];
+
     bool vetor[tamVetor];
+    bool vetorInverso[tamVetor];
+    bool matrizInversa[n][n];
 
     vector<Vertice> grafo;
     vector<int> vetorCompacto;
@@ -80,20 +83,8 @@ int main()
                 if (grafo[i].lista[k].valor == j)
                 {
                     matriz[i][j] = 1;
+                    matriz[j][i] = 1;
                 }
-            }
-        }
-    }
-
-    /* equalizacao da matriz de adjacencia binaria */
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            if (matriz[i][j] != matriz[j][i])
-            {
-                matriz[i][j] = 1;
-                matriz[j][i] = 1;
             }
         }
     }
@@ -140,6 +131,58 @@ int main()
     for (int i = 0; i < vetorCompacto.size(); i++)
     {
         cout << vetorCompacto[i] + 1 << endl;
+    }
+
+    /* obtencao do vetor completo a partir do vetor compactado */
+    for (int i = 0; i < tamVetor; i++)
+    {
+        vetorInverso[i] = 0;
+        for (int j = 0; j < vetorCompacto.size(); j++)
+        {
+            if (vetorCompacto[j] == i)
+            {
+                vetorInverso[i] = 1;
+            }
+        }
+    }
+
+    cout << endl
+         << "Representacao vetorial extendida do vetor compacto:" << endl;
+    for (int i = 0; i < tamVetor; i++)
+    {
+        cout << "pos " << i + 1 << " = " << vetorInverso[i] << endl;
+    }
+
+    /* inicializacao da matriz inversa */
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            matrizInversa[i][j] = 0;
+        }
+    }
+
+    /* geracao da matriz a partir da representacao vetorial */
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            int pos = j - i + k(i, n - 1);
+
+            matrizInversa[i][j] = vetorInverso[pos - 1];
+            matrizInversa[j][i] = vetorInverso[pos - 1];
+        }
+    }
+
+    cout << endl
+         << "Matriz inversa" << endl;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            cout << matrizInversa[i][j] << " ";
+        }
+        cout << endl;
     }
 
     return 0;
