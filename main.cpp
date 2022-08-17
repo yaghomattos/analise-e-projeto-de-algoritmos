@@ -24,8 +24,16 @@ int k_recursivo(int i, int n)
     }
 }
 
-int k_iterativo(int i, int n)
+int k_iterativo(int i)
 {
+    int k[N];
+    k[0] = 0;
+    for (int j = 1; j < N; j++)
+    {
+        k[j] = (N - 1) - (j - 1) + k[j - 1];
+    }
+
+    return k[i];
 }
 
 vector<Vertice> criaGrafo()
@@ -216,6 +224,22 @@ void soma(bool vetor[TAM_VETOR], bool vetorInverso[TAM_VETOR])
     }
 }
 
+void produto(bool vetor[TAM_VETOR], bool vetorInverso[TAM_VETOR])
+{
+    bool resultado[TAM_VETOR];
+    bool aux;
+
+    for (int i = 0; i < N; i++)
+    {
+        resultado[i] = 0;
+        for (int j = 0; j < N; j++)
+        {
+            aux += (vetor[j] * vetorInverso[i + ((j * N) - 1)]);
+        }
+        resultado[i] = aux;
+    }
+}
+
 int main()
 {
     bool matriz[N][N];
@@ -228,17 +252,26 @@ int main()
 
     srand(time(NULL));
 
-    grafo = criaGrafo();
+    // grafo = criaGrafo();
 
-    geraMatriz(matriz, grafo);
+    // geraMatriz(matriz, grafo);
 
-    representacaoVetorial(matriz, vetor);
+    // representacaoVetorial(matriz, vetor);
 
-    vetorCompacto = representacaoVetorialCompactada(vetor);
+    // vetorCompacto = representacaoVetorialCompactada(vetor);
 
-    vetorCompactadoParaMatriz(vetorCompacto, vetorInverso, matrizInversa);
+    // vetorCompactadoParaMatriz(vetorCompacto, vetorInverso, matrizInversa);
 
-    soma(vetor, vetorInverso);
+    int i = 1;
+    int j = 2;
+
+    cout << "Mapeamento da entrada (i,j) da matriz para a posicao K do vetor:" << endl;
+    cout << "Recursivo - " << j - i + k_recursivo(i, N - 1) << endl;
+    cout << "Iterativo - " << j - i + k_iterativo(i) << endl;
+
+    // soma(vetor, vetorInverso);
+
+    // produto(vetor, vetorInverso);
 
     return 0;
 }
