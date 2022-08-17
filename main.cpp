@@ -14,28 +14,6 @@ struct Vertice
     vector<Vertice> lista;
 };
 
-int k_recursivo(int i, int n)
-{
-    if (i == 0)
-        return 0;
-    else
-    {
-        return (n - (i - 1) + k_recursivo(i - 1, n));
-    }
-}
-
-int k_iterativo(int i)
-{
-    int k[N];
-    k[0] = 0;
-    for (int j = 1; j < N; j++)
-    {
-        k[j] = (N - 1) - (j - 1) + k[j - 1];
-    }
-
-    return k[i];
-}
-
 vector<Vertice> criaGrafo()
 {
     int mult = 0; /* multiplicador para o número de arestas de 1 a 10 */
@@ -206,6 +184,41 @@ void vetorCompactadoParaMatriz(vector<int> vetorCompacto, bool vetorInverso[TAM_
     }
 }
 
+int k_recursivo(int i, int n)
+{
+    if (i == 0)
+        return 0;
+    else
+    {
+        return (n - (i - 1) + k_recursivo(i - 1, n));
+    }
+}
+
+int k_iterativo(int i)
+{
+    int k[N];
+    k[0] = 0;
+    for (int j = 1; j < N; j++)
+    {
+        k[j] = (N - 1) - (j - 1) + k[j - 1];
+    }
+    return k[i];
+}
+
+void mapeamentoInverso(int k)
+{
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            int aux = k_iterativo(i) + j;
+
+            if (aux == k)
+                cout << "Mapeamento inverso de k = " << k << " -> (" << i << ", " << j + i << ")" << endl;
+        }
+    }
+}
+
 void soma(bool vetor[TAM_VETOR], bool vetorInverso[TAM_VETOR])
 {
     int soma[TAM_VETOR];
@@ -262,12 +275,15 @@ int main()
 
     // vetorCompactadoParaMatriz(vetorCompacto, vetorInverso, matrizInversa);
 
-    int i = 1;
-    int j = 2;
+    int i = 4;
+    int j = 8;
 
-    cout << "Mapeamento da entrada (i,j) da matriz para a posicao K do vetor:" << endl;
+    cout << "Mapeamento da entrada (" << i << ", " << j << ") da matriz para a posicao K do vetor:" << endl;
     cout << "Recursivo - " << j - i + k_recursivo(i, N - 1) << endl;
-    cout << "Iterativo - " << j - i + k_iterativo(i) << endl;
+    cout << "Iterativo - " << j - i + k_iterativo(i) << endl
+         << endl;
+
+    mapeamentoInverso(j - i + k_recursivo(i, N - 1));
 
     // soma(vetor, vetorInverso);
 
