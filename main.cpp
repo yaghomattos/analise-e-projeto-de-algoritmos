@@ -14,6 +14,57 @@ struct Vertice
     vector<Vertice> lista;
 };
 
+vector<Vertice> criaGrafo();
+void geraMatriz(bool matriz[N][N], vector<Vertice> grafo);
+void representacaoVetorial(bool matriz[N][N], bool vetor[TAM_VETOR]);
+vector<int> representacaoVetorialCompactada(bool vetor[TAM_VETOR]);
+void vetorCompactadoParaMatriz(vector<int> vetorCompacto, bool vetorInverso[TAM_VETOR], bool matrizInversa[N][N]);
+int k_recursivo(int i, int n);
+int k_iterativo(int i);
+void mapeamentoInverso(int k);
+void soma(bool vetor[TAM_VETOR], bool vetorInverso[TAM_VETOR]);
+void produto(bool vetor[TAM_VETOR], bool vetorInverso[TAM_VETOR]);
+
+int main()
+{
+    bool matriz[N][N];
+    bool vetor[TAM_VETOR];
+    bool vetorInverso[TAM_VETOR];
+    bool matrizInversa[N][N];
+
+    vector<Vertice> grafo;
+    vector<int> vetorCompacto;
+
+    srand(time(NULL));
+
+    grafo = criaGrafo();
+
+    geraMatriz(matriz, grafo);
+
+    representacaoVetorial(matriz, vetor);
+
+    vetorCompacto = representacaoVetorialCompactada(vetor);
+
+    vetorCompactadoParaMatriz(vetorCompacto, vetorInverso, matrizInversa);
+
+    int i = 4;
+    int j = 8;
+
+    cout << endl
+         << "Mapeamento da entrada (" << i << ", " << j << ") da matriz para a posicao K do vetor:" << endl;
+    cout << "Recursivo - " << j - i + k_recursivo(i, N - 1) << endl;
+    cout << "Iterativo - " << j - i + k_iterativo(i) << endl
+         << endl;
+
+    mapeamentoInverso(j - i + k_recursivo(i, N - 1));
+
+    soma(vetor, vetorInverso);
+
+    produto(vetor, vetorInverso);
+
+    return 0;
+}
+
 vector<Vertice> criaGrafo()
 {
     int mult = 0; /* multiplicador para o número de arestas de 1 a 10 */
@@ -28,6 +79,9 @@ vector<Vertice> criaGrafo()
 
         grafo.push_back(novo);
     }
+    /**
+     * Complexidade O(n)
+     */
 
     /* geracao de 1 a 10 arestas aleatorias por vertice */
     mult = rand() % 10 + 1;
@@ -44,6 +98,10 @@ vector<Vertice> criaGrafo()
             numAresta++;
         }
     }
+    /**
+     * Complexidade T(n) = n * 10 + 5
+     * T(n) = 10n + 5
+     */
 
     cout << "Numero de Arestas = " << numAresta << endl;
 
@@ -60,6 +118,10 @@ void geraMatriz(bool matriz[N][N], vector<Vertice> grafo)
             matriz[i][j] = 0;
         }
     }
+    /**
+     * Complexidade T(n) = n * n + 1
+     * T(n) = n^2 + 1
+     */
 
     /* geracao da matriz de adjacencia binaria */
     for (int i = 0; i < N; i++)
@@ -76,6 +138,10 @@ void geraMatriz(bool matriz[N][N], vector<Vertice> grafo)
             }
         }
     }
+    /**
+     * Complexidade T(n) = n * n * 10 + 3
+     * T(n) = 10n^2 + 3
+     */
 
     for (int i = 0; i < N; i++)
     {
@@ -98,6 +164,10 @@ void representacaoVetorial(bool matriz[N][N], bool vetor[TAM_VETOR])
             vetor[pos - 1] = matriz[i][j];
         }
     }
+    /**
+     * Complexidade T(n) = n * n + i + 2
+     * T(n) = n^2 + i + 2
+     */
 
     cout << endl
          << "Representacao vetorial parte triangular superior:" << endl;
@@ -118,6 +188,9 @@ vector<int> representacaoVetorialCompactada(bool vetor[TAM_VETOR])
             vetorCompacto.push_back(i);
         }
     }
+    /**
+     * Complexidade O(TAM_VETOR)
+     */
 
     cout << endl
          << "Vetor compactado:" << endl;
@@ -143,6 +216,13 @@ void vetorCompactadoParaMatriz(vector<int> vetorCompacto, bool vetorInverso[TAM_
             }
         }
     }
+    /**
+     * Complexidade T(n) = TAM_VETOR * vetorCompacto
+     * T(n) = n(n-1)/2 * TAM_VETOR
+     * T(n) = n(n-1)/2 * n(n-1)/2
+     * T(n) = n(n-1)
+     * T(n) = n^2 - n
+     */
 
     cout << endl
          << "Representacao vetorial extendida do vetor compacto:" << endl;
@@ -171,6 +251,12 @@ void vetorCompactadoParaMatriz(vector<int> vetorCompacto, bool vetorInverso[TAM_
             matrizInversa[j][i] = vetorInverso[pos - 1];
         }
     }
+    /**
+     * Complexidade T(n) = n * (n-1)/2 + n
+     * T(n) = n(n-1)/2 + n
+     * T(n) = (n^2 - n)/2 + n
+     * T(n) = (n^2 + n)/2
+     */
 
     cout << endl
          << "Matriz inversa" << endl;
@@ -192,6 +278,10 @@ int k_recursivo(int i, int n)
     {
         return (n - (i - 1) + k_recursivo(i - 1, n));
     }
+
+    /**
+     * Complexidade O(i) = O(n)
+     */
 }
 
 int k_iterativo(int i)
@@ -203,6 +293,10 @@ int k_iterativo(int i)
         k[j] = (N - 1) - (j - 1) + k[j - 1];
     }
     return k[i];
+
+    /**
+     * Complexidade T(n) = n + 2
+     */
 }
 
 void mapeamentoInverso(int k)
@@ -217,6 +311,10 @@ void mapeamentoInverso(int k)
                 cout << "Mapeamento inverso de k = " << k << " -> (" << i << ", " << j + i << ")" << endl;
         }
     }
+    /**
+     * Complexidade T(n) = n * n + n + 3
+     * T(n) = n^2 + n + 3
+     */
 }
 
 void soma(bool vetor[TAM_VETOR], bool vetorInverso[TAM_VETOR])
@@ -230,6 +328,13 @@ void soma(bool vetor[TAM_VETOR], bool vetorInverso[TAM_VETOR])
         soma[i] = vetor[i] + vetorInverso[i];
         cout << soma[i];
     }
+    /**
+     * Complexidade T(n) = TAM_VETOR + 1 + TAM_VETOR
+     * T(n) = n(n-1)/2 + 1 + n(n-1)/2
+     * T(n) = n(n-1) + 1
+     * T(n) = n^2 - n + 1
+     */
+
     cout << endl;
     for (int i = 0; i < TAM_VETOR; i++)
     {
@@ -251,43 +356,4 @@ void produto(bool vetor[TAM_VETOR], bool vetorInverso[TAM_VETOR])
         }
         resultado[i] = aux;
     }
-}
-
-int main()
-{
-    bool matriz[N][N];
-    bool vetor[TAM_VETOR];
-    bool vetorInverso[TAM_VETOR];
-    bool matrizInversa[N][N];
-
-    vector<Vertice> grafo;
-    vector<int> vetorCompacto;
-
-    srand(time(NULL));
-
-    // grafo = criaGrafo();
-
-    // geraMatriz(matriz, grafo);
-
-    // representacaoVetorial(matriz, vetor);
-
-    // vetorCompacto = representacaoVetorialCompactada(vetor);
-
-    // vetorCompactadoParaMatriz(vetorCompacto, vetorInverso, matrizInversa);
-
-    int i = 4;
-    int j = 8;
-
-    cout << "Mapeamento da entrada (" << i << ", " << j << ") da matriz para a posicao K do vetor:" << endl;
-    cout << "Recursivo - " << j - i + k_recursivo(i, N - 1) << endl;
-    cout << "Iterativo - " << j - i + k_iterativo(i) << endl
-         << endl;
-
-    mapeamentoInverso(j - i + k_recursivo(i, N - 1));
-
-    // soma(vetor, vetorInverso);
-
-    // produto(vetor, vetorInverso);
-
-    return 0;
 }
