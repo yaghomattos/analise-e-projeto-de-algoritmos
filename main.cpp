@@ -60,8 +60,6 @@ int main()
 
     soma(vetor, vetorInverso);
 
-    produto(vetor, vetorInverso);
-
     return 0;
 }
 
@@ -99,11 +97,13 @@ vector<Vertice> criaGrafo()
         }
     }
     /**
-     * Complexidade T(n) = n * 10 + 5
-     * T(n) = 10n + 5
+     * Complexidade T(n) = n + 1 * mult * 5
+     * T(n) =  (n + 1) * 10 * 5
+     * T(n) = 15(n + 1)
      */
 
-    cout << "Numero de Arestas = " << numAresta << endl;
+    cout << "Numero de vertices = " << N << endl
+         << "Numero de arestas = " << numAresta << endl;
 
     return grafo;
 }
@@ -119,8 +119,9 @@ void geraMatriz(bool matriz[N][N], vector<Vertice> grafo)
         }
     }
     /**
-     * Complexidade T(n) = n * n + 1
-     * T(n) = n^2 + 1
+     * Complexidade T(n) = n + 1 * n + 1
+     * T(n) = (n + 1)^2
+     * T(n) = n^2 + 2n + 1
      */
 
     /* geracao da matriz de adjacencia binaria */
@@ -139,10 +140,14 @@ void geraMatriz(bool matriz[N][N], vector<Vertice> grafo)
         }
     }
     /**
-     * Complexidade T(n) = n * n * 10 + 3
-     * T(n) = 10n^2 + 3
+     * Complexidade T(n) = n + 1 * n + 1 * mult * 3
+     * T(n) = (n + 1)^2 * mult * 3
+     * T(n) = 3(n^2 + 2n + 1) * mult
+     * T(n) = 30(n^2 + 2n + 1)
      */
 
+    cout << endl
+         << "Matriz de adjacencia" << endl;
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
@@ -165,8 +170,10 @@ void representacaoVetorial(bool matriz[N][N], bool vetor[TAM_VETOR])
         }
     }
     /**
-     * Complexidade T(n) = n * n + i + 2
-     * T(n) = n^2 + i + 2
+     * Complexidade T(n) = n + 1 * n(n-1)/2 * 2 * i
+     * T(n) = (n + 1) * n(n - 1) * n
+     * T(n) = n^2 * (n + 1) * (n - 1)
+     * T(n) = n^4 - n^2
      */
 
     cout << endl
@@ -189,7 +196,9 @@ vector<int> representacaoVetorialCompactada(bool vetor[TAM_VETOR])
         }
     }
     /**
-     * Complexidade O(TAM_VETOR)
+     * Complexidade T(n) = TAM_VETOR + 1 * 2
+     * T(n) = n(n-1)/2 + 1 * 2
+     * T(n) = 2 + n^2 - n
      */
 
     cout << endl
@@ -217,11 +226,10 @@ void vetorCompactadoParaMatriz(vector<int> vetorCompacto, bool vetorInverso[TAM_
         }
     }
     /**
-     * Complexidade T(n) = TAM_VETOR * vetorCompacto
-     * T(n) = n(n-1)/2 * TAM_VETOR
-     * T(n) = n(n-1)/2 * n(n-1)/2
-     * T(n) = n(n-1)
-     * T(n) = n^2 - n
+     * Complexidade T(n) = TAM_VETOR + 1 * vetorCompacto + 1 * 2
+     * T(n) = n(n-1)/2 + 1 * TAM_VETOR + 1 * 2
+     * T(n) = n(n-1)/2 + 1 * n(n-1)/2 + 1 * 2
+     * T(n) = (2 + n^2 - n)^2/2
      */
 
     cout << endl
@@ -239,6 +247,11 @@ void vetorCompactadoParaMatriz(vector<int> vetorCompacto, bool vetorInverso[TAM_
             matrizInversa[i][j] = 0;
         }
     }
+    /**
+     * Complexidade T(n) = n + 1 * n + 1
+     * T(n) = (n + 1)^2
+     * T(n) = n^2 + 2n + 1
+     */
 
     /* geracao da matriz a partir da representacao vetorial */
     for (int i = 0; i < N; i++)
@@ -252,10 +265,9 @@ void vetorCompactadoParaMatriz(vector<int> vetorCompacto, bool vetorInverso[TAM_
         }
     }
     /**
-     * Complexidade T(n) = n * (n-1)/2 + n
-     * T(n) = n(n-1)/2 + n
-     * T(n) = (n^2 - n)/2 + n
-     * T(n) = (n^2 + n)/2
+     * Complexidade T(n) = n + 1 * (n-1)/2 * 3 * n
+     * T(n) = n(n-1)/2 * 3(n + 1)
+     * T(n) = 3n(n + 1)(n - 1)
      */
 
     cout << endl
@@ -295,7 +307,8 @@ int k_iterativo(int i)
     return k[i];
 
     /**
-     * Complexidade T(n) = n + 2
+     * Complexidade T(n) = n - 1 + 2
+     * T(n) = n + 1
      */
 }
 
@@ -312,8 +325,8 @@ void mapeamentoInverso(int k)
         }
     }
     /**
-     * Complexidade T(n) = n * n + n + 3
-     * T(n) = n^2 + n + 3
+     * Complexidade T(n) = n + 1 * n + 1 * 3 * n
+     * T(n) = 3n(n + 1)^2
      */
 }
 
@@ -323,16 +336,17 @@ void soma(bool vetor[TAM_VETOR], bool vetorInverso[TAM_VETOR])
 
     cout << endl
          << "Soma" << endl;
+
     for (int i = 0; i < TAM_VETOR; i++)
     {
         soma[i] = vetor[i] + vetorInverso[i];
+
         cout << soma[i];
     }
     /**
-     * Complexidade T(n) = TAM_VETOR + 1 + TAM_VETOR
-     * T(n) = n(n-1)/2 + 1 + n(n-1)/2
-     * T(n) = n(n-1) + 1
-     * T(n) = n^2 - n + 1
+     * Complexidade T(n) = TAM_VETOR + 1
+     * T(n) = n(n-1)/2 + 1
+     * T(n) = (2 + n^2 - n)/2
      */
 
     cout << endl;
